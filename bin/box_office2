@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require "./lib/box_office2"
+
+BoxOffice2::CLI.new.call
