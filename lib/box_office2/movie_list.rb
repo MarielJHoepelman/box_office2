@@ -7,12 +7,13 @@ module BoxOffice2
     end
 
     def scrape_imdb
-      doc = Nokogiri::HTML(open('https://www.imdb.com/chart/boxoffice'))
+      doc = BoxOffice2::Scrapper.scrapper("chart/boxoffice")
       movies_list = doc.css(".chart .titleColumn")
 
       movies_list.map do |movie|
         {
-          title: movie.text.strip
+          title: movie.text.strip,
+          url: movie.css("a").attribute("href").value
         }
       end
     end

@@ -3,7 +3,12 @@ module BoxOffice2
 
     def call
       show_welcome
+      start
+    end
+
+    def start
       movie_list
+      menu_options
     end
 
     def show_welcome
@@ -19,15 +24,44 @@ module BoxOffice2
       @list.each_with_index do |movie, index|
         puts "#{index + 1}. #{movie[:title]}"
       end
-      movie_input
     end
 
-    def movie_input
-      input = gets.strip.to_i
+    def menu_options
+      @selection = nil
 
-      while input != 0 do
-        puts "here"
+      while @selection != 0 do
+        @selection = gets.strip.to_i
 
+        if @selection.between?(1, @list.count)
+          display_movie
+        elsif @selection == 0
+          exit
+        else
+          puts "This entry is invalid. Please enter a valid selection"
+          menu_options
+        end
+      end
+    end
+
+    def display_movie
+      movie = BoxOffice2::Movie.find_or_create(@list[@selection - 1])
+
+      puts movie.title
+      puts ""
+      puts movie.description
+      puts ""
+      continue_menu
+    end
+
+    def continue_menu
+      puts "Would you like to go back to the main menu?"
+      input = gets.strip
+
+      if input.downcase == "y"
+        start
+      else
+        puts "bye"
+        exit
       end
     end
   end
