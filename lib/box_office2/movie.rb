@@ -16,15 +16,23 @@ module BoxOffice2
        @description = doc.css(".summary_text").text.strip
        @year = doc.css("#titleYear").text.strip
        @rate = doc.css(".ratingValue").text.strip
-       @cast = doc.css("tr.odd, tr.even")
+
+       doc_cast = doc.css("tr.odd, tr.even")
+       @cast = doc_cast.map do |row|
+         actor = row.css("td")[1].text.strip.gsub("\n","").squeeze(" ")
+         role = row.css("td")[3].text.strip.gsub("\n","").squeeze(" ")
+         "#{actor.yellow} as #{role.yellow}"
+       end
      end
 
-     def self.all
+     def self.all_movies
        @@all
      end
 
      def self.find_by_title(item)
-       all.find{|movie| movie.title == item[:title]}
+       all_movies.find do |movie|
+         movie.title == item[:title]
+       end
      end
 
      def self.find_or_create(item)
