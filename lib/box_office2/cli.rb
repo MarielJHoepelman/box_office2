@@ -13,17 +13,19 @@ module BoxOffice2
 
     def show_welcome
       puts ""
-      puts "Welcome to the Box Office"
-      puts "Please select your movie or enter 0 for exit"
+      puts "\u{1F3A6} Welcome to the Box Office \u{1F3A6}".green
       puts "========================="
-      puts ""
     end
 
     def movie_list
+      puts ""
       @list ||= BoxOffice2::MovieList.new.list
       @list.each_with_index do |movie, index|
         puts "#{index + 1}. #{movie[:title]}"
       end
+      puts ""
+      puts "Please select your movie or enter 0 for exit"
+      puts ""
     end
 
     def menu_options
@@ -45,16 +47,22 @@ module BoxOffice2
 
     def display_movie
       movie = BoxOffice2::Movie.find_or_create(@list[@selection - 1])
-
-      puts movie.title
       puts ""
-      puts movie.description
+      puts "Title: #{movie.title.yellow}"
+      puts ""
+      puts "Rate: #{movie.rate.yellow}"
+      puts ""
+      puts "Description:"
+      puts movie.description.yellow
+      puts ""
+      puts "Cast:"
+      puts movie.cast
       puts ""
       continue_menu
     end
 
     def continue_menu
-      puts "Would you like to go back to the main menu?"
+      puts "Would you like to go back to the main menu? y/n"
       input = gets.strip
 
       if input.downcase == "y"
