@@ -6,3 +6,4 @@ gemspec
 gem 'nokogiri'
 gem 'pry'
 gem 'rb-readline'
+gem 'colorize'

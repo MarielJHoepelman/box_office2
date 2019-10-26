@@ -2,6 +2,7 @@ require "open-uri"
 require "nokogiri"
 require "pry"
 require "rb-readline"
+require "colorize"
 
 require_relative "box_office2/version"
 require_relative "box_office2/cli"
