@@ -18,9 +18,11 @@ module BoxOffice2
     end
 
     def movie_list
+      @boxoffice_list ||= BoxOffice2::MovieList.new
       puts ""
-      @list ||= BoxOffice2::MovieList.new.list
-      @list.each_with_index do |movie, index|
+      puts @boxoffice_list.weekend_date.yellow
+      puts ""
+      @boxoffice_list.list.each_with_index do |movie, index|
         puts "#{index + 1}. #{movie[:title]}"
       end
       puts ""
@@ -34,7 +36,7 @@ module BoxOffice2
       while @selection != 0 do
         @selection = gets.strip.to_i
 
-        if @selection.between?(1, @list.count)
+        if @selection.between?(1, @boxoffice_list.list.count)
           display_movie
         elsif @selection == 0
           exit
@@ -46,7 +48,7 @@ module BoxOffice2
     end
 
     def display_movie
-      movie = BoxOffice2::Movie.find_or_create(@list[@selection - 1])
+      movie = BoxOffice2::Movie.find_or_create(@boxoffice_list.list[@selection - 1])
       puts ""
       puts "Title: #{movie.title.yellow} #{movie.year}"
       puts ""
