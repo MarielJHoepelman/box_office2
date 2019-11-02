@@ -4,9 +4,9 @@ module BoxOffice2
 
     @@all = []
 
-     def initialize(item)
-       @url = item[:url]
-       @title = item[:title]
+     def initialize(movie)
+       @url = movie[:url]
+       @title = movie[:title]
        scrape_movie
        @@all << self
      end
@@ -29,14 +29,14 @@ module BoxOffice2
        @@all
      end
 
-     def self.find_by_title(item)
-       all_movies.find do |movie|
-         movie.title == item[:title]
+     def self.find_by_url(movie)
+       all_movies.find do |m|
+         m.url == movie[:url]
        end
      end
 
-     def self.find_or_create(item)
-       find_by_title(item) || new(item)
+     def self.find_or_create(movie)
+       find_by_url(movie) || new(movie)
      end
    end
  end
