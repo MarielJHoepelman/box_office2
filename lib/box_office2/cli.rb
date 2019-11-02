@@ -48,7 +48,7 @@ module BoxOffice2
     def display_movie
       movie = BoxOffice2::Movie.find_or_create(@list[@selection - 1])
       puts ""
-      puts "Title: #{movie.title.yellow}"
+      puts "Title: #{movie.title.yellow} #{movie.year}"
       puts ""
       puts "Rate: #{movie.rate.yellow}"
       puts ""
