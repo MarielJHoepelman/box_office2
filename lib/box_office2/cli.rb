@@ -69,9 +69,11 @@ module BoxOffice2
 
       if input.downcase == "y"
         start
-      else
-        puts "bye"
+      elsif input.downcase == "n"
         exit
+      else
+        puts "This entry is invalid. Please enter a valid selection"
+        continue_menu
       end
     end
   end
