@@ -8,7 +8,7 @@ module BoxOffice2
     end
 
     private
-    
+
     def doc
       @doc ||= BoxOffice2::Scrapper.scrapper("chart/boxoffice")
     end
@@ -18,13 +18,20 @@ module BoxOffice2
     end
 
     def scrape_list
-      movies_list = doc.css("table.chart.full-width td.titleColumn")
+      movies_list = doc.css("table.chart.full-width tbody tr")
 
       movies_list.map do |movie|
-        {
-          title: movie.css("a").text,
-          url: movie.css("a").attribute("href").value
-        }
+
+        title = movie.css("td.titleColumn a").text
+        url = movie.css("td.titleColumn a").attribute("href").value
+        gross = movie.css("td.ratingColumn span.secondaryInfo").text
+
+        BoxOffice2::Movie.new(title, url, gross)
+
+        # {
+        #   title: movie.css("a").text,
+        #   url: movie.css("a").attribute("href").value
+        # }
       end
     end
   end

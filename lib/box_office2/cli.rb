@@ -23,7 +23,7 @@ module BoxOffice2
       puts @boxoffice_list.weekend_date.yellow
       puts ""
       @boxoffice_list.list.each_with_index do |movie, index|
-        puts "#{index + 1}. #{movie[:title]}"
+        puts "#{index + 1}. #{movie.title} (#{movie.gross})"
       end
       puts ""
       puts "Please select your movie or enter 0 for exit"
@@ -48,7 +48,8 @@ module BoxOffice2
     end
 
     def display_movie
-      movie = BoxOffice2::Movie.find_or_create(@boxoffice_list.list[@selection - 1])
+      movie = BoxOffice2::MovieDetails.find_or_create(@boxoffice_list.list[@selection - 1])
+      puts "#{movie.status}"
       puts ""
       puts "Title: #{movie.title.yellow} #{movie.year}"
       puts ""
@@ -64,17 +65,26 @@ module BoxOffice2
     end
 
     def continue_menu
-      puts "Would you like to go back to the main menu? y/n"
+      puts "To see this movie in IMDB enter o"
+      puts "Enter y to go back to main menu or n to exit"
       input = gets.strip
 
       if input.downcase == "y"
         start
       elsif input.downcase == "n"
         exit
+      elsif input.downcase == "o"
+        open_movie_in_browser
+        continue_menu
       else
         puts "This entry is invalid. Please enter a valid selection"
         continue_menu
       end
+    end
+
+    def open_movie_in_browser
+      movie = @boxoffice_list.list[@selection - 1]
+      `open "#{BoxOffice2::Scrapper::IMDB_BASE_URL}#{movie.url}"`
     end
   end
 end
