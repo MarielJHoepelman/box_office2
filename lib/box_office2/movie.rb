@@ -11,6 +11,8 @@ module BoxOffice2
        @@all << self
      end
 
+     private
+     
      def scrape_movie
        doc = BoxOffice2::Scrapper.scrapper(url)
        @description = doc.css(".summary_text").text.strip
